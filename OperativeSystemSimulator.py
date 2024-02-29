@@ -2,12 +2,19 @@ import random
 import simpy 
 import csv
 
+#Parámetros modificadas antes de correr la simulación según el inciso del ejercicio 
+MAX_AVAILABLE_RAM = 200
+CPU_INSTRUCTIONS_PER_CYCLE = 6 
+PROCESSORS = 2
+INTERVAL = 1
+
+#Constantes utilizadas dentro de la simulación establecidas por las intrucciones
 MAX_RAM = 10
 MAX_INSTRUCTIONS = 10
 CPU_CYCLE_TIME = 3
 CPU_FAST_CYCLE_TIME = 1
-CPU_INSTRUCTIONS_PER_CYCLE = 3
 IO_TIMEOUT = 5
+
 
 random.seed(1)
 class Program:
@@ -51,12 +58,7 @@ class Program:
                         print(f"{env.now} {self.name} sale del CPU con {self.instructions} instrucciones restantes")
 
                         
-                        #self.end_time = env.now #Get moment of leaving CPU
-                        #print(f"end_time: {self.end_time}")
-
-                #self.total_time = self.total_time + (self.end_time - self.start_time )
-                #print(f"total_time: {self.total_time}") #Add current cycle time
-
+                       
                 needs_io = random.randint(1,2)
                 if(needs_io == 1 and self.instructions > 0):
                     print(f"{env.now} dv {self.name} solicita IO...")
@@ -80,62 +82,30 @@ def simulation(env, available_ram, processor, program_amount, writer):
         newProgram = Program(name, env, instructions, needed_ram, available_ram, processor,writer)
 
         env.process(newProgram.run())
-        yield env.timeout(random.expovariate(1.0/10))
+        yield env.timeout(random.expovariate(1.0/INTERVAL))
 
 
 
 #Inciso a
 
 #---------------------------------------------------------------------25 procesos ---------------------------------------------------------------------
-env = simpy.Environment()
-processor = simpy.Resource(env, capacity=1)
-available_ram = simpy.Container(env, init = 100, capacity=100)
-program_amount = 25
 
-with open("25Process.csv", "w") as file:
-    csv_writer = csv.writer(file)
-    csv_writer.writerow(["Process", "Time"])
-    env.process(simulation(env, available_ram, processor, program_amount, csv_writer))
-    env.run()
+program_amount = [25,50,100,150,200]
 
-#---------------------------------------------------------------------50 procesos---------------------------------------------------------------------
-# env = simpy.Environment()
-# processor = simpy.Resource(env, capacity=1)
-# available_ram = simpy.Container(env, init = 100, capacity=100)
-# program_amount = 50
+for n in program_amount:
+    print(n)
+    env = simpy.Environment()
+    processor = simpy.Resource(env, capacity=PROCESSORS)
+    available_ram = simpy.Container(env, init = MAX_AVAILABLE_RAM, capacity=MAX_AVAILABLE_RAM)
 
-# env.process(simulation(env, available_ram, processor, program_amount))
-# env.run()
+    file_name = str(n) + "Test.csv"
 
-#---------------------------------------------------------------------100 procesos---------------------------------------------------------------------
+    with open(file_name, "w",newline='') as file:
+        csv_writer = csv.writer(file)
+        csv_writer.writerow(["Process", "Time"])
+        env.process(simulation(env, available_ram, processor, n, csv_writer))
+        env.run()
 
-# env = simpy.Environment()
-# processor = simpy.Resource(env, capacity=1)
-# available_ram = simpy.Container(env, init = 100, capacity=100)
-# program_amount = 100
-
-# env.process(simulation(env, available_ram, processor, program_amount))
-# env.run()
-
-#---------------------------------------------------------------------150 procesos---------------------------------------------------------------------
-
-# env = simpy.Environment()
-# processor = simpy.Resource(env, capacity=1)
-# available_ram = simpy.Container(env, init = 100, capacity=100)
-# program_amount = 150
-
-# env.process(simulation(env, available_ram, processor, program_amount))
-# env.run()
-
-#---------------------------------------------------------------------200 procesos---------------------------------------------------------------------
-
-# env = simpy.Environment()
-# processor = simpy.Resource(env, capacity=1)
-# available_ram = simpy.Container(env, init = 100, capacity=100)
-# program_amount = 200
-
-# env.process(simulation(env, available_ram, processor, program_amount))
-# env.run()
 
 
 

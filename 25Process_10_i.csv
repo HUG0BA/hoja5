@@ -1,0 +1,26 @@
+Process,Time,,,Time,
+process_0,22.80156265,3,,,
+process_1,17,8,,Media,10.28433421
+process_4,4.970586128,10,,Error típico,1.232090108
+process_2,15.6087642,2,,Mediana,11
+process_3,19.32119396,7,,Moda,14
+process_5,12,4,,Desviación estándar,6.160450538
+process_7,4,8,,Varianza de la muestra,37.95115083
+process_6,9.241899509,9,,Curtosis,-0.955873291
+process_8,1,5,,Coeficiente de asimetría,0.074449204
+process_9,4,9,,Rango,21.80156265
+process_10,12.89167558,9,,Mínimo,1
+process_11,14.92859433,7,,Máximo,22.80156265
+process_12,13,8,,Suma,257.1083553
+process_13,17.85787911,3,,Cuenta,25
+process_14,3,3,,,
+process_15,14,4,,,
+process_16,6,10,,,
+process_17,14,7,,,
+process_18,11,8,,,
+process_20,2.925885031,6,,,
+process_19,10.56031479,9,,,
+process_21,3,4,,,
+process_22,14,2,,,
+process_23,1,2,,,
+process_24,9,4,,,
